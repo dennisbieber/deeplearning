@@ -11,12 +11,11 @@ ys = OneHotEncoder(categories='auto').fit_transform(ys.reshape(-1, 1)).toarray()
 
 image = 255. - imread("9.png").reshape(1, -1)
 
-n = Neuron(784, ys.shape[0], 0.00001)
+n = Neuron(784, ys.shape[0])
 
-for k in range(0, 50):
-
-    n.train(xs, ys)
+for k in range(0, 60000, 100):
+    n.train(xs[k:k + 100, :], ys[:, k:k + 100], 0.00001)
 
     pred = n.predict(image)
     num = np.argmax(pred, axis=0)
-    print(k + 1, num, "(" + str(pred.reshape(1, -1)[0][num]) + ")")
+    print(k, num, "(" + str(pred.reshape(1, -1)[0][num]) + ")")

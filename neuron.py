@@ -3,20 +3,19 @@ from scipy.special import expit
 
 class Neuron:
 
-    def __init__(self, weight_count, output_count, learn_rate=0.1):
+    def __init__(self, weight_count, output_count):
         self.w = np.zeros((output_count, weight_count))
         self.b = np.zeros(output_count)
-        self.learn_rate = learn_rate
 
     def predict(self, x):
         return expit((self.w @ x.T).T + self.b).T
 
-    def train(self, x, y):
+    def train(self, x, y, learn_rate=0.1):
         e = self.predict(x) - y
         dw = (x.T @ e.T / x.shape[0]).T
         db = np.mean(e, axis=1)
-        self.w -= self.learn_rate * dw
-        self.b -= self.learn_rate * db
+        self.w -= learn_rate * dw
+        self.b -= learn_rate * db
 
     def costs(self, x, y):
         predict = self.predict(x)
